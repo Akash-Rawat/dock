@@ -1,0 +1,378 @@
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+resources:
+  repositories:
+    - repository: devops
+      type: bitbucket
+      name: accruent/dp_devops
+      endpoint: "Bitbucket Service Connection"
+
+trigger:
+  branches:
+     include:
+       - develop
+       - master
+
+variables:
+  - group: prefect-var-group
+  - group: salesforce-prefect-var-group
+  - group: veracode-var-group
+  - name: containerRegistryName
+    value: 'dp_docker'
+  - name: containerRegistryUrl
+    value: 'proget.accruentsystems.com'
+  - name: dockerImageName
+    value: 'dp_docker/ingest/ingest-salesforce-snowflake-pref'
+  - name: dockerImageFile
+    value: 'ingest-salesforce-snowflake-pref'
+  - name: dockerFilePath
+    value: 'dockerfile'
+  - name: progetAPIKey
+    value: $(proget_api_key)
+  - name: azPrefectStorageAccountNameQA
+    value: 'dpprefectusnp'
+  - name: azPrefectStorageAccountNameProd
+    value: 'dpprefectuspr'
+  - name: azPrefectStorageAccountKeyQA
+    value: $(az_storageAccountKeyQA)
+  - name: azPrefectStorageAccountKeyProd
+    value: $(az_storageAccountKeyProd)
+  - name: prefectAPIkey
+    value: $(prefect_api_key)
+  - name: projectqa
+    value: 'dp-ingest-qa'
+  - name: projectprod
+    value: 'dp-ingest-prod'
+  - name: azPrefectStorageConnectionStringQA
+    value: $(az_connectionStringQA)
+  - name: azPrefectStorageConnectionStringProd
+    value: $(az_connectionStringProd)
+  - name: salesforceClientId
+    value: $(salesforce_client_id)
+  - name: salesforceClientSecret
+    value: $(salesforce_client_secret)
+  - name: salesforceRefreshToken
+    value: $(salesforce_refresh_token)
+  - name: qaenv
+    value: 'qa'
+  - name: prodenv
+    value: 'prod'
+  - name: azShareNameQA
+    value: 'aci-share-us-qa'
+  - name: azShareNameProd
+    value: 'aci-share-us-prod'
+  - name: azFileShareNameQA
+    value: 'dp-ingest-salesforce-snowflake-qa'
+  - name: azFileShareNamePROD
+    value: 'dp-ingest-salesforce-snowflake-prod'
+  - name: azContainerQA
+    value: 'prefect-qa'
+  - name: azContainerProd
+    value: 'prefect-prod'
+  - name: adlsStorageAccountNameQA
+    value: 'dpdlusnp'
+  - name: adlsStorageAccountNameProd
+    value: 'dpdluspr'
+  - name: adlsStorageAccountURLQA
+    value: 'https://dpdlusnp.dfs.core.windows.net'
+  - name: adlsStorageAccountURLProd
+    value: 'https://dpdluspr.dfs.core.windows.net'
+  - name: adlsFileSystemQA
+    value: 'data-qa'
+  - name: adlsFileSystemProd
+    value: 'data-prod'
+  - name: azPrefectServicePrincipalUserNameQA
+    value: $(az_servicePrincipalUserNameQA)
+  - name: azPrefectServicePrincipalPasswordQA
+    value: $(az_servicePrincipalPasswordQA)
+  - name: azPrefectServicePrincipalTenantQA
+    value: $(az_servicePrincipalTenantQA)
+  - name: azPrefectServicePrincipalDatalakePasswordQA
+    value: $(az_servicePrincipalDatalakePasswordQA)
+  - name: azSnowflakeUsernameQA
+    value: $(salesforce_snowflake_usernameQA)
+  - name: azSnowflakePasswordQA
+    value: $(salesforce_snowflake_passwordQA)
+  - name: azSnowflakeDefaultTargetSchemaQA
+    value: $(salesforce_snowflake_defaultTargetSchemaQA)
+  - name: azSnowflakeRoleQA
+    value: $(salesforce_snowflake_roleQA)
+  - name: azSnowflakeStageQA
+    value: $(salesforce_snowflake_stageQA)
+  - name: azPrefectServicePrincipalUserNameProd
+    value: $(az_servicePrincipalUserNameProd)
+  - name: azPrefectServicePrincipalPasswordProd
+    value: $(az_servicePrincipalPasswordProd)
+  - name: azPrefectServicePrincipalTenantProd
+    value: $(az_servicePrincipalTenantProd)
+  - name: azPrefectServicePrincipalDatalakePasswordProd
+    value: $(az_servicePrincipalDatalakePasswordProd)
+  - name: azSnowflakeUsernameProd
+    value: $(salesforce_snowflake_usernameProd)
+  - name: azSnowflakePasswordProd
+    value: $(salesforce_snowflake_passwordProd)
+  - name: azSnowflakeDefaultTargetSchemaProd
+    value: $(salesforce_snowflake_defaultTargetSchemaProd)
+  - name: azSnowflakeRoleProd
+    value: $(salesforce_snowflake_roleProd)
+  - name: azSnowflakeStageProd
+    value: $(salesforce_snowflake_stageProd)
+  - name: azAKSClusterNameQA
+    value: 'dp-eastus-np-aks01'
+  - name: azAKSClusterNameProd
+    value: 'dp-dataiku-eastus-pr-aks02'
+  - name: azAKSClusterResourceGroupNameQA
+    value: 'dp-eastus-np-aks-rg'
+  - name: azAKSClusterResourceGroupNameProd
+    value: 'dp-dataiku-eastus-pr-aks-rg'
+  - name: azAKSDockerSecretNameQA
+    value: 'proget-docker-secret-qa'
+  - name: azAKSDockerSecretNameProd
+    value: 'proget-docker-secret-prod'
+  - name: azAKSDockerImageNameQA
+    value: 'proget.accruentsystems.com/dp_docker/ingest/ingest-salesforce-snowflake:develop_latest'
+  - name: azAKSDockerImageNameProd
+    value: 'proget.accruentsystems.com/dp_docker/ingest/ingest-salesforce-snowflake:master_latest'
+  - name: isDevelop
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
+  - name: azPendoShareNameSubPathQA
+    value: $(az_pendo_share_name_sub_path)
+  - name: azPendoShareNameSubPathProd
+    value: $(az_pendon_share_name_sub_path)
+  - name: azSalesforceShareNameSubPathQA
+    value: $(az_salesforce_share_name_sub_path)
+  - name: azSalesforceShareNameSubPathProd
+    value: $(az_salesforce_share_name_sub_path)
+  - name: privateKeyPassPhraseQA
+    value: $(salesforce_private_key_pass_phrase_QA)    
+  - name: privateKeyPassPhraseProd
+    value: $(salesforce_private_key_pass_phrase_Prod)
+  - name: privateKeyFilenameQA
+    value: $(salesforce_private_key_filename_QA)
+  - name: privateKeyFilenameProd
+    value: $(salesforce_private_key_filename_Prod)
+
+stages:
+  - stage: INFO
+    pool:
+      name: 'Scaled Pool - Ubuntu'
+    displayName: 'Info'
+    jobs:
+      - job: Info
+        steps:
+          - template: "AzureDevops/Templates/prefect-ingestion-Info-template.yml@devops"
+            parameters:
+               azPrefectStorageAccountNameQA: $(azPrefectStorageAccountNameQA)
+               azPrefectStorageAccountNameProd: $(azPrefectStorageAccountNameProd)
+               azPrefectStorageAccountKeyQA: $(azPrefectStorageAccountKeyQA)
+               azPrefectStorageAccountKeyProd: $(azPrefectStorageAccountKeyProd)
+               projectqa: $(projectqa)
+               projectprod: $(projectprod)
+               azPrefectStorageConnectionStringQA: $(azPrefectStorageConnectionStringQA)
+               azPrefectStorageConnectionStringPROD: $(azPrefectStorageConnectionStringPROD)
+               qaenv: $(qaenv)
+               prodenv: $(prodenv)
+               azShareNameQA: $(azShareNameQA)
+               azShareNameProd: $(azShareNameProd)
+               azFileShareNameQA: $(azFileShareNameQA)
+               azFileShareNamePROD: $(azFileShareNamePROD)
+               azContainerQA: $(azContainerQA)
+               azContainerProd: $(azContainerProd)
+               adlsStorageAccountNameQA: $(adlsStorageAccountNameQA)
+               adlsStorageAccountNameProd: $(adlsStorageAccountNameProd)
+               adlsStorageAccountURLQA: $(adlsStorageAccountURLQA)
+               adlsStorageAccountURLProd: $(adlsStorageAccountURLProd)
+               adlsFileSystemQA: $(adlsFileSystemQA)
+               adlsFileSystemProd: $(adlsFileSystemProd)
+               azPrefectServicePrincipalUserNameQA: $(azPrefectServicePrincipalUserNameQA)
+               azPrefectServicePrincipalPasswordQA: $(azPrefectServicePrincipalPasswordQA)
+               azPrefectServicePrincipalTenantQA: $(azPrefectServicePrincipalTenantQA)
+               azPrefectServicePrincipalDatalakePasswordQA: $(azPrefectServicePrincipalDatalakePasswordQA)
+               azSnowflakeUsernameQA: $(azSnowflakeUsernameQA)
+               azSnowflakePasswordQA: $(azSnowflakePasswordQA)
+               azSnowflakeDefaultTargetSchemaQA: $(azSnowflakeDefaultTargetSchemaQA)
+               azSnowflakeRoleQA: $(azSnowflakeRoleQA)
+               azSnowflakeStageQA: $(azSnowflakeStageQA)
+               azPrefectServicePrincipalUserNameProd: $(azPrefectServicePrincipalUserNameProd)
+               azPrefectServicePrincipalPasswordProd: $(azPrefectServicePrincipalPasswordProd)
+               azPrefectServicePrincipalTenantProd: $(azPrefectServicePrincipalTenantProd)
+               azPrefectServicePrincipalDatalakePasswordProd: $(azPrefectServicePrincipalDatalakePasswordProd)
+               azSnowflakeUsernameProd: $(azSnowflakeUsernameProd)
+               azSnowflakePasswordProd: $(azSnowflakePasswordProd)
+               azSnowflakeDefaultTargetSchemaProd: $(azSnowflakeDefaultTargetSchemaProd)
+               azSnowflakeRoleProd: $(azSnowflakeRoleProd)
+               azSnowflakeStageProd: $(azSnowflakeStageProd)
+               azAKSClusterNameQA: $(azAKSClusterNameQA)
+               azAKSClusterNameProd: $(azAKSClusterNameProd)
+               azAKSClusterResourceGroupNameQA: $(azAKSClusterResourceGroupNameQA)
+               azAKSClusterResourceGroupNameProd: $(azAKSClusterResourceGroupNameProd)
+               azAKSDockerSecretNameQA: $(azAKSDockerSecretNameQA)
+               azAKSDockerSecretNameProd: $(azAKSDockerSecretNameProd)
+               azAKSDockerImageNameQA: $(azAKSDockerImageNameQA)
+               azAKSDockerImageNameProd: $(azAKSDockerImageNameProd)
+               azPendoShareNameSubPathQA: $(azPendoShareNameSubPathQA)
+               azPendoShareNameSubPathProd: $(azPendoShareNameSubPathProd)
+               azSalesforceShareNameSubPathQA: $(azSalesforceShareNameSubPathQA)
+               azSalesforceShareNameSubPathProd: $(azSalesforceShareNameSubPathProd)
+               privateKeyPassPhraseQA: $(privateKeyPassPhraseQA)
+               privateKeyPassPhraseProd: $(privateKeyPassPhraseProd)
+               privateKeyFilenameQA: $(privateKeyFilenameQA)
+               privateKeyFilenameProd: $(privateKeyFilenameProd)
+
+  - stage: DEPLOYSALESFORCECONFIG
+    pool:
+      name: 'Scaled Pool - Ubuntu'
+    displayName: 'Deploy salesforce config file to ACI file share'
+    dependsOn:
+    - INFO
+    variables:
+      branch: $[ stageDependencies.INFO.Info.outputs['setVars.branch'] ]
+      azStorageAccountName: $[ stageDependencies.INFO.Info.outputs['setVars.azStorageAccountName'] ]
+      azStorageAccountKey: $[ stageDependencies.INFO.Info.outputs['setVars.azStorageAccountKey'] ]
+      azShareName: $[ stageDependencies.INFO.Info.outputs['setVars.azShareName'] ]
+      environment: $[ stageDependencies.INFO.Info.outputs['setVars.environment'] ]
+      adlsStorageAccountName: $[ stageDependencies.INFO.Info.outputs['setVars.adlsStorageAccountName'] ]
+      adlsStorageAccountURL: $[ stageDependencies.INFO.Info.outputs['setVars.adlsStorageAccountURL'] ]
+      adlsFileSystem: $[ stageDependencies.INFO.Info.outputs['setVars.adlsFileSystem'] ]
+      azPrefectServicePrincipalUserName: $[ stageDependencies.INFO.Info.outputs['setVars.azPrefectServicePrincipalUserName'] ]
+      azPrefectServicePrincipalPassword: $[ stageDependencies.INFO.Info.outputs['setVars.azPrefectServicePrincipalPassword'] ]
+      azPrefectServicePrincipalTenant: $[ stageDependencies.INFO.Info.outputs['setVars.azPrefectServicePrincipalTenant'] ]
+      azPrefectServicePrincipalDatalakePassword: $[ stageDependencies.INFO.Info.outputs['setVars.azPrefectServicePrincipalDatalakePassword'] ]
+      azSnowflakeUsername: $[ stageDependencies.INFO.Info.outputs['setVars.azSnowflakeUsername'] ]
+      azSnowflakePassword: $[ stageDependencies.INFO.Info.outputs['setVars.azSnowflakePassword'] ]
+      azSnowflakeDefaultTargetSchema: $[ stageDependencies.INFO.Info.outputs['setVars.azSnowflakeDefaultTargetSchema'] ]
+      azSnowflakeRole: $[ stageDependencies.INFO.Info.outputs['setVars.azSnowflakeRole'] ]
+      azSnowflakeStage: $[ stageDependencies.INFO.Info.outputs['setVars.azSnowflakeStage'] ]
+      azSalesforceShareNameSubPath: $[ stageDependencies.INFO.Info.outputs['setVars.azSalesforceShareNameSubPath'] ]
+      privateKeyPassPhrase: $[ stageDependencies.INFO.Info.outputs['setVars.privateKeyPassPhrase'] ]
+      privateKeyFilename: $[ stageDependencies.INFO.Info.outputs['setVars.privateKeyFilename'] ]      
+    jobs:
+      - job: DeploySalesforceConfig
+        displayName: Deploy salesforce config file to azure file share
+        condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+        steps:
+          - template: "AzureDevops/Templates/prefect-ingestion-deploysalesforceconfig-template.yml@devops"
+            parameters:
+               branch: $(branch)
+               azStorageAccountName: $(azStorageAccountName)
+               azStorageAccountKey: $(azStorageAccountKey)
+               azShareName: $(azShareName)
+               environment: $(environment)
+               adlsStorageAccountName: $(adlsStorageAccountName)
+               adlsStorageAccountURL: $(adlsStorageAccountURL)
+               adlsFileSystem: $(adlsFileSystem)
+               azPrefectServicePrincipalUserName: $(azPrefectServicePrincipalUserName)
+               azPrefectServicePrincipalPassword: $(azPrefectServicePrincipalPassword)
+               azPrefectServicePrincipalTenant: $(azPrefectServicePrincipalTenant)
+               azPrefectServicePrincipalDatalakePassword: $(azPrefectServicePrincipalDatalakePassword)
+               azSnowflakeUsername: $(azSnowflakeUsername)
+               azSnowflakePassword: $(azSnowflakePassword)
+               azSnowflakeDefaultTargetSchema: $(azSnowflakeDefaultTargetSchema)
+               azSnowflakeRole: $(azSnowflakeRole)
+               azSnowflakeStage: $(azSnowflakeStage)
+               azSalesforceShareNameSubPath: $(azSalesforceShareNameSubPath)
+               privateKeyPassPhrase: $(privateKeyPassPhrase)
+               privateKeyFilename: $(privateKeyFilename)               
+
+  - stage: REGISTER
+    pool:
+      vmImage: ubuntu-latest
+    displayName: 'Register Flows'
+    dependsOn: 
+      - INFO
+    variables:
+      branch: $[ stageDependencies.INFO.Info.outputs['setVars.branch'] ]
+      IMAGE_URL: "$(containerRegistryUrl)/$(dockerImageName):$(branch)_latest"
+      projectname: $[ stageDependencies.INFO.Info.outputs['setVars.projectName'] ]
+      AZURE_STORAGE_CONNECTION_STRING: "$[ stageDependencies.INFO.Info.outputs['setVars.azStorageConnetionString'] ]"
+      AZURE_CONTAINER: "$[ stageDependencies.INFO.Info.outputs['setVars.azContainer'] ]"
+      ENV_LABEL: "$[ stageDependencies.INFO.Info.outputs['setVars.environment'] ]"
+    jobs:
+      - job: register
+        condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+        steps:
+          - template: "AzureDevops/Templates/prefect-ingestion-register-template.yml@devops"
+            parameters:
+               projectname: $(projectname)
+               prefectAPIKey: $(prefectAPIKey)
+
+  - stage: BUILD
+    pool:
+      name: 'Scaled Pool - Ubuntu'
+    displayName: 'Build and Push Docker Image'
+    dependsOn:
+      - INFO
+    variables:
+      branch: $[ stageDependencies.INFO.Info.outputs['setVars.branch'] ]
+      currentDate: $[ stageDependencies.INFO.Info.outputs['setVars.currentDate'] ]
+      azStorageConnetionString: $[ stageDependencies.INFO.Info.outputs['setVars.azStorageConnetionString'] ]
+      imageurl: "$(containerRegistryUrl)/$(dockerImageName):$(branch)_latest"
+      azShareName: $[ stageDependencies.INFO.Info.outputs['setVars.azShareName'] ]
+      azFileShareName: $[ stageDependencies.INFO.Info.outputs['setVars.azFileShareName'] ]
+      azPrefectServicePrincipalUserName: $[ stageDependencies.INFO.Info.outputs['setVars.azPrefectServicePrincipalUserName'] ]
+      azPrefectServicePrincipalPassword: $[ stageDependencies.INFO.Info.outputs['setVars.azPrefectServicePrincipalPassword'] ]
+      azPrefectServicePrincipalTenant: $[ stageDependencies.INFO.Info.outputs['setVars.azPrefectServicePrincipalTenant'] ]
+      runEnvironment: $[ stageDependencies.INFO.Info.outputs['setVars.environment'] ]
+      azAKSClusterName: $[ stageDependencies.INFO.Info.outputs['setVars.azAKSClusterName'] ]
+      azAKSClusterResourceGroupName: $[ stageDependencies.INFO.Info.outputs['setVars.azAKSClusterResourceGroupName'] ]
+      azAKSDockerSecretName: $[ stageDependencies.INFO.Info.outputs['setVars.azAKSDockerSecretName'] ]
+      azAKSDockerImageName: $[ stageDependencies.INFO.Info.outputs['setVars.azAKSDockerImageName'] ]
+      azPendoShareNameSubPath: $[ stageDependencies.INFO.Info.outputs['setVars.azPendoShareNameSubPath'] ]
+      azSalesforceShareNameSubPath: $[ stageDependencies.INFO.Info.outputs['setVars.azSalesforceShareNameSubPath'] ]
+    jobs:
+      - job: Build
+        steps:
+          - template: "AzureDevops/Templates/prefect-ingestion-build-template.yml@devops"
+            parameters:
+               branch: $(branch)
+               currentDate: $(currentDate)
+               azStorageConnetionString: $(azStorageConnetionString)
+               imageurl: $(imageurl)
+               azShareName: $(azShareName)
+               azFileShareName: $(azFileShareName)
+               containerRegistryName: $(containerRegistryName)
+               dockerImageName: $(dockerImageName)
+               dockerFilePath: $(dockerFilePath)
+               azPrefectServicePrincipalUserName: $(azPrefectServicePrincipalUserName)
+               azPrefectServicePrincipalPassword: $(azPrefectServicePrincipalPassword)
+               azPrefectServicePrincipalTenant: $(azPrefectServicePrincipalTenant)
+               runEnvironment: $(runEnvironment)
+               azAKSClusterName: $(azAKSClusterName)
+               azAKSClusterResourceGroupName: $(azAKSClusterResourceGroupName)
+               azAKSDockerSecretName: $(azAKSDockerSecretName)
+               azAKSDockerImageName: $(azAKSDockerImageName)
+               azPendoShareNameSubPath: $(azPendoShareNameSubPath)
+               azSalesforceShareNameSubPath: $(azSalesforceShareNameSubPath)
+
+  - stage: DOCKER_SCA_SCAN
+    pool:
+      name: 'Scaled Pool - Ubuntu'
+    displayName: Veracode Docker SCA Scan
+    dependsOn:
+      - INFO
+      - BUILD
+    condition: eq(variables.isDevelop, true)
+    variables:
+      branch: $[ stageDependencies.INFO.Info.outputs['setVars.branch'] ]
+    jobs:
+      - job: SCA_Scan
+        steps:
+          - template: "AzureDevops/Templates/veracode-docker-scan-template.yml@devops"
+            parameters:
+              DOCKER_IMAGE: $(containerRegistryUrl)/$(dockerImageName):$(branch)_latest
+              VERACODE_SRCCLR_API_TOKEN: $(VeracodeDockerAgentToken)
+
+  - stage: TEST
+    pool:
+      name: 'Scaled Pool - Ubuntu'
+    displayName: 'Test docker container'
+    dependsOn: 'BUILD'
+    variables:
+      projectname: $[ stageDependencies.INFO.Info.outputs['setVars.projectName'] ]
+    jobs:
+      - job: Test
+        displayName: 'Test'
+        steps:
+          - template: "AzureDevops/Templates/prefect-ingestion-test-template.yml@devops"
+            parameters:
+               projectname: $(projectname)

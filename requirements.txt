@@ -1,0 +1,6 @@
+prefect
+pendulum
+datetime
+azure-cli==2.27.2
+azure-storage-blob
+azure-storage-file-share

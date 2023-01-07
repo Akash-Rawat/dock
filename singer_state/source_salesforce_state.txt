@@ -1,0 +1,83 @@
+{
+    "current_stream": null,
+    "bookmarks": {
+      "Account": {
+        "SystemModstamp": "2021-08-29T00:00:00.000000Z"
+      },
+      "At_Risk__c": {
+        "SystemModstamp": "2021-08-24T00:00:00.000000Z"
+      },
+      "At_Risk__History": {
+        "CreatedDate": "2020-01-01T00:00:00.000000Z"
+      },
+      "At_Risk_Subscription__History": {
+        "CreatedDate": "2020-07-07T00:00:00.000000Z"
+      },
+      "Case": {
+        "SystemModstamp": "2021-10-07T00:00:00.000000Z"
+      },
+      "Contact": {
+        "SystemModstamp": "2015-11-02T00:00:00.000000Z"
+      },
+      "Contract": {
+        "SystemModstamp": "2021-10-07T00:00:00.000000Z"
+      },
+      "CurrencyType": {
+        "SystemModstamp": "2021-09-30T00:00:00.000000Z"
+      },
+      "Opportunity": {
+        "SystemModstamp": "2021-08-29T00:00:00.000000Z"
+      },
+      "OpportunityHistory": {
+        "SystemModstamp": "2021-08-27T00:00:00.000000Z"
+      },
+      "OpportunityLineItem": {
+        "SystemModstamp": "2021-08-26T00:00:00.000000Z"
+      },
+      "Opportunity_Forecast_Summary__c": {
+        "SystemModstamp": "2021-03-09T00:00:00.000000Z"
+      },
+      "Product2": {
+        "SystemModstamp": "2021-09-02T00:00:00.000000Z"
+      },
+      "RecordType": {
+        "SystemModstamp": "2021-08-23T00:00:00.000000Z"
+      },
+      "RecordTypeIds__c": {
+        "SystemModstamp": "2018-09-03T00:00:00.000000Z"
+      },
+      "RecordTypeLocalization": {
+        "SystemModstamp": "2021-07-09T00:00:00.000000Z"
+      },
+      "Subscription__c": {
+        "SystemModstamp": "2021-08-27T00:00:00.000000Z"
+      },
+      "SBQQ__Subscription__c": {
+        "SystemModstamp": "2021-10-07T00:00:00.000000Z"
+      },
+      "Task": {
+        "SystemModstamp": "2021-08-29T00:00:00.000000Z"
+      },
+      "Zuora__Subscription__c": {
+        "SystemModstamp": "2021-08-27T00:00:00.000000Z"
+      },
+      "Entitlement": {
+        "SystemModstamp": "2021-10-13T00:00:00.000000Z"
+      },
+      "EntitlementContact": {
+        "SystemModstamp": "2021-10-13T00:00:00.000000Z"
+      },
+      "Cloud_System_Entitlement__c": {
+        "SystemModstamp": "2020-01-01T00:00:00.000000Z"
+      },
+      "TenantUsageEntitlement": {
+        "SystemModstamp": "2021-10-13T00:00:00.000000Z"
+      },
+      "Cloud_System_Entitlement__History": {
+        "CreatedDate": "2020-01-01T00:00:00.000000Z"
+      },
+      "EntitlementFeed": {
+        "SystemModstamp": "2020-01-01T00:00:00.000000Z"
+      }
+    }
+  }

@@ -1,0 +1,22 @@
+{
+    "account": "SNOWFLAKE_ACCOUNT",
+    "dbname": "SNOWFLAKE_DBNAME",
+    "user": "SNOWFLAKE_USER",
+    "password": "SNOWFLAKE_PASSWORD",
+    "private_key_pass_phrase": "PRIVATE_KEY_PASS_PHRASE",
+    "private_key_filename": "PRIVATE_KEY_FILENAME",
+    "warehouse": "SNOWFLAKE_WAREHOUSE",
+    "file_format": "SALESFORCE.SALESFORCE_SHARED.PARQUET_STANDARD",
+    "default_target_schema": "SNOWFLAKE_DEFAULT_TARGET_SCHEMA",
+    "role": "SNOWFLAKE_ROLE",
+    "stage": "SNOWFLAKE_STAGE",
+    "adls_storage_account_account_url": "ADLS_STORAGE_ACCOUNT_URL",
+    "adls_storage_account_name": "ADLS_STORAGE_ACCOUNT_NAME",
+    "adls_client_id": "ADLS_CLIENT_ID",
+    "adls_client_secret": "ADLS_CLIENT_SECRET",
+    "adls_tenant_id": "ADLS_TENANT_ID",
+    "adls_file_system": "ADLS_FILE_SYSTEM",
+    "adls_file_system_directory": "singer/salesforce",
+    "delete_from_stage_yes_no": "no",
+    "stage_only_yes_no": "no"
+  }
